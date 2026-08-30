@@ -1,0 +1,16 @@
+{
+    "inspect": {
+        "prefix": "print_pretty",
+        "body": [
+            "print(vim.inspect(${1}))$0"
+        ],
+        "description": "pretty print whatever"
+    },
+    "inspect callback": {
+        "prefix": "icallback",
+        "body": [
+            "function(...) print(vim.inspect {...}) end $0"
+        ],
+        "description": "Inline callback to pretty print the args"
+    }
+}

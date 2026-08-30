@@ -1,0 +1,37 @@
+{
+    "for": {
+        "prefix": "for",
+        "body": [
+            "for ${1} in (${2}) do $0"
+        ],
+        "description": "For loop"
+    },
+    "for-files": {
+        "prefix": "forf",
+        "body": [
+            "for /f \"${1}\" %%${2:a} in (${3}) do $0"
+        ],
+        "description": "Iterate over lines"
+    },
+    "for-dir": {
+        "prefix": "ford",
+        "body": [
+            "for /d %%d in (${1:*}) do $0"
+        ],
+        "description": "Iterate over dirs"
+    },
+    "for-range": {
+        "prefix": "forl",
+        "body": [
+            "for /l %%i in (${1:start}, ${2:step}, ${3:end}) do $0"
+        ],
+        "description": "Iterate over a range of numbers (end inclusive)"
+    },
+    "for-recursive": {
+        "prefix": "forr",
+        "body": [
+            "for /r ${1:dir} %%f in (${2:*}) do $0"
+        ],
+        "description": "Recursive directory traversal"
+    }
+}

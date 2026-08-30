@@ -1,0 +1,42 @@
+{
+    "code-block": {
+        "prefix": "codeblock",
+        "body": [ "```${1:lang}", "$0", "```" ],
+        "description": "Insert fenced code block"
+    },
+    "code": {
+        "prefix": "code",
+        "body": ["`${1}` $0"],
+        "description": "Insert code"
+    },
+    "italic": {
+        "prefix": "i",
+        "body": ["*${1}*$0"],
+        "description": "Insert italic text"
+    },
+    "bold": {
+        "prefix": "b",
+        "body": ["**${1}**$0"],
+        "description": "Insert bold text"
+    },
+    "bold italic": {
+        "prefix": ["bi", "ib"],
+        "body": ["***${1}***$0"],
+        "description": "Insert bold italic text"
+    },
+    "strikethrough": {
+        "prefix": "strikethrough",
+        "body": ["~~${1}~~$0"],
+        "description": "Insert strikethrough text"
+    },
+    "inline-link": {
+        "prefix": "l",
+        "body": ["[${1:text}](${2:url})$0"],
+        "description": "Inline link"
+    },
+    "url": {
+        "prefix": "u",
+        "body": ["<${1:url}>$0"],
+        "description": "Url"
+    }
+}

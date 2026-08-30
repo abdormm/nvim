@@ -1,0 +1,22 @@
+{
+    "workspace.library": [
+        "$VIMRUNTIME",
+        "$nvimdata/lazy/lazy.nvim/",
+        "$nvimdata/lazy/blink.cmp/",
+        "$nvimdata/lazy/indent-blankline.nvim/",
+        "$nvimdata/lazy/fzf-lua/",
+        "$nvimdata/lazy/flash.nvim/",
+        "$nvimdata/lazy/neo-tree.nvim/",
+        "$nvimdata/lazy/nvim-web-devicons/",
+        "$nvimdata/lazy/telescope.nvim/",
+        "$nvimdata/lazy/nvim-lspconfig/",
+        "$nvimdata/lazy/nvim-jdtls/"
+    ],
+    "runtime": {
+        "version": "LuaJIT",
+        "path": [
+            "lua/?.lua",
+            "lua/?/init.lua"
+        ]
+    }
+}
