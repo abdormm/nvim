@@ -5,7 +5,6 @@ M.cwd_root_dir = function(_, on_dir)
     on_dir(vim.fn.getcwd())
 end
 
----comment
 ---@param config vim.lsp.ClientConfig
 ---@return lsp.WorkspaceFolder[]?
 M.get_workspace_folders = function(config)
