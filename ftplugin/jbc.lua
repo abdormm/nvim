@@ -2,12 +2,15 @@ vim.bo.iskeyword = "@,48-57,_,192-255,."
 vim.bo.indentkeys = "0=RETURN,0=END,=ELSE,=THEN,=DO,:"
 vim.bo.commentstring = "* %s"
 
+local label = "^%s*[%w_.]+:%s*$"
+local line_comment = "^%s*;?%s*%*.*"
+local eol_comment = ";%s*%*.*$"
+
 local starts = {
     "^%s*SUBROUTINE%s+",
     "^%s*PROGRAM%s+",
     "^%s*FOR%s+",
     "%s+THEN%s*$",
-    "^%s*[%w_.]+:%s*$",
     "^%s*LOOP%s*$",
     "%s+ELSE%s*$",
     "%s+DO%s*$",
@@ -15,14 +18,15 @@ local starts = {
 
 local ends = {
     "^%s*END%s*$",
-    "^%s*RETURN%s*$",
     "^%s*REPEAT%s*$",
     "%s+DO%s*$",
     "^%s*NEXT%s+",
 }
 
-local line_comment = "^%s*;?%s*%*.*"
-local eol_comment = ";%s*%*.*$"
+local skips = {
+    label,
+    line_comment,
+}
 
 ---Returns `true` if `str` matches any pattern in `patterns`.
 ---@param str string
@@ -42,15 +46,16 @@ end
 ---@return integer width the number of spaces worth of indent.
 function JBC_indent()
     local curr_line = vim.api.nvim_get_current_line()
+    if curr_line:match(label) then return 0 end
     if curr_line:match(line_comment) then return -1 end
     local lnum = vim.v.lnum
     if lnum == 1 then return -1 end
 
     local prev_lnum = lnum - 1
     local prev_line = ""
-    while prev_lnum ~= 1 do
+    while prev_lnum ~= 0 do
         prev_line = vim.fn.getline(prev_lnum)
-        if prev_line ~= "" and not prev_line:match(line_comment) then break end
+        if prev_line ~= "" and not matches_any(prev_line, skips) then break end
         prev_lnum = prev_lnum - 1
     end
 
