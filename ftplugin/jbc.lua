@@ -10,6 +10,8 @@ local starts = {
     "^%s*SUBROUTINE%s+",
     "^%s*PROGRAM%s+",
     "^%s*FOR%s+",
+    "^%s*WHILE%s+",
+    "^%s*UNTIL%s+",
     "%s+THEN%s*$",
     "^%s*LOOP%s*$",
     "%s+ELSE%s*$",
@@ -19,6 +21,8 @@ local starts = {
 local ends = {
     "^%s*END%s*$",
     "^%s*REPEAT%s*$",
+    "^%s*WHILE%s+",
+    "^%s*UNTIL%s+",
     "%s+DO%s*$",
     "^%s*NEXT%s+",
 }

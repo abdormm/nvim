@@ -8,6 +8,7 @@ syntax keyword jbcKeyword
             \ CALL
             \ CASE
             \ CRT
+            \ DO
             \ ELSE
             \ END
             \ FOR
