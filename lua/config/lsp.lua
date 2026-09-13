@@ -39,4 +39,5 @@ vim.lsp.enable {
     "jsonls",
     "yamlls",
     "lemminx",
+    "qmlls",
 }
