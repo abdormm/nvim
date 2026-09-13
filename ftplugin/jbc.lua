@@ -1,0 +1,74 @@
+vim.bo.iskeyword = "@,48-57,_,192-255,."
+vim.bo.indentkeys = "0=RETURN,0=END,=ELSE,=THEN,=DO,:"
+vim.bo.commentstring = "* %s"
+
+local starts = {
+    "^%s*SUBROUTINE%s+",
+    "^%s*PROGRAM%s+",
+    "^%s*FOR%s+",
+    "%s+THEN%s*$",
+    "^%s*[%w_.]+:%s*$",
+    "^%s*LOOP%s*$",
+    "%s+ELSE%s*$",
+    "%s+DO%s*$",
+}
+
+local ends = {
+    "^%s*END%s*$",
+    "^%s*RETURN%s*$",
+    "^%s*REPEAT%s*$",
+    "%s+DO%s*$",
+    "^%s*NEXT%s+",
+}
+
+local line_comment = "^%s*;?%s*%*.*"
+local eol_comment = ";%s*%*.*$"
+
+---Returns `true` if `str` matches any pattern in `patterns`.
+---@param str string
+---@param patterns string[]
+---@return boolean
+local function matches_any(str, patterns)
+    for _, pattern in ipairs(patterns) do
+        if str:match(pattern) then
+            return true
+        end
+    end
+    return false
+end
+
+---A somewhat dumb indenter but it works really good for most syntactically and
+---semantically valid programs.
+---@return integer width the number of spaces worth of indent.
+function JBC_indent()
+    local curr_line = vim.api.nvim_get_current_line()
+    if curr_line:match(line_comment) then return -1 end
+    local lnum = vim.v.lnum
+    if lnum == 1 then return -1 end
+
+    local prev_lnum = lnum - 1
+    local prev_line = ""
+    while prev_lnum ~= 1 do
+        prev_line = vim.fn.getline(prev_lnum)
+        if prev_line ~= "" and not prev_line:match(line_comment) then break end
+        prev_lnum = prev_lnum - 1
+    end
+
+    prev_line = prev_line:gsub(eol_comment, "")
+    curr_line = curr_line:gsub(eol_comment, "")
+
+    local prev_width = vim.fn.indent(prev_lnum)
+
+    if matches_any(curr_line, ends) then
+        if matches_any(prev_line, starts) then return prev_width end
+        return math.max(prev_width - vim.bo.shiftwidth, 0)
+    end
+
+    if matches_any(prev_line, starts) then
+        return prev_width + vim.bo.shiftwidth
+    end
+
+    return prev_width
+end
+
+vim.bo.indentexpr = "v:lua.JBC_indent()"
