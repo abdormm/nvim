@@ -5,6 +5,8 @@ vim.bo.commentstring = "* %s"
 local subroutine = "^%s*SUBROUTINE%s+"
 local program = "^%s*PROGRAM%s+"
 local label = "^%s*[%w_.]+:%s*$"
+local case = "^%s*CASE%s+"
+local end_case = "^%s*END%s+CASE%s*$"
 local line_comment = "^%s*;?%s*%*.*"
 local eol_comment = ";%s*%*.*$"
 
@@ -15,7 +17,6 @@ local starts = {
     "^%s*WHILE%s+",
     "^%s*UNTIL%s+",
     "^%s*BEGIN%s+",
-    "^%s*CASE%s+",
     "%s+THEN%s*$",
     "^%s*LOOP%s*$",
     "%s+ELSE%s*$",
@@ -27,7 +28,6 @@ local ends = {
     "^%s*REPEAT%s*$",
     "^%s*END%s+",
     "^%s*ELSE%s*$",
-    "^%s*CASE%s+",
     "^%s*WHILE%s+",
     "^%s*UNTIL%s+",
     "%s+DO%s*$",
@@ -83,10 +83,27 @@ function JBC_indent()
 
     if matches_any(curr_line, ends) then
         if matches_any(prev_line, starts) then return prev_width end
+        -- to close both CASE block and BEGIN CASE block
+        if not prev_line:match(case) and curr_line:match(end_case) then
+            return math.max(prev_width - 2 * vim.bo.shiftwidth, 0)
+        end
         return math.max(prev_width - vim.bo.shiftwidth, 0)
     end
 
     if matches_any(prev_line, starts) then
+        return prev_width + vim.bo.shiftwidth
+    end
+
+    --- will happen with all CASE statements except the one right before BEGIN
+    --- CASE
+    if curr_line:match(case) then
+        if prev_line:match(case) then
+            return prev_width
+        end
+        return math.max(prev_width - vim.bo.shiftwidth, 0)
+    end
+
+    if prev_line:match(case) then
         return prev_width + vim.bo.shiftwidth
     end
 
