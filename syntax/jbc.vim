@@ -5,6 +5,7 @@ syntax clear
 
 syntax keyword jbcKeyword
             \ ABORT
+            \ BEGIN
             \ CALL
             \ CASE
             \ CRT

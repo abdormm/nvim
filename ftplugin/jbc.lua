@@ -2,16 +2,20 @@ vim.bo.iskeyword = "@,48-57,_,192-255,."
 vim.bo.indentkeys = "0=RETURN,0=END,=ELSE,=THEN,=DO,:"
 vim.bo.commentstring = "* %s"
 
+local subroutine = "^%s*SUBROUTINE%s+"
+local program = "^%s*PROGRAM%s+"
 local label = "^%s*[%w_.]+:%s*$"
 local line_comment = "^%s*;?%s*%*.*"
 local eol_comment = ";%s*%*.*$"
 
 local starts = {
-    "^%s*SUBROUTINE%s+",
-    "^%s*PROGRAM%s+",
+    subroutine,
+    program,
     "^%s*FOR%s+",
     "^%s*WHILE%s+",
     "^%s*UNTIL%s+",
+    "^%s*BEGIN%s+",
+    "^%s*CASE%s+",
     "%s+THEN%s*$",
     "^%s*LOOP%s*$",
     "%s+ELSE%s*$",
@@ -21,7 +25,9 @@ local starts = {
 local ends = {
     "^%s*END%s*$",
     "^%s*REPEAT%s*$",
-    "^%s*END%s+ELSE%s*$",
+    "^%s*END%s+",
+    "^%s*ELSE%s*$",
+    "^%s*CASE%s+",
     "^%s*WHILE%s+",
     "^%s*UNTIL%s+",
     "%s+DO%s*$",
@@ -31,6 +37,12 @@ local ends = {
 local skips = {
     label,
     line_comment,
+}
+
+local no_indentation = {
+    program,
+    subroutine,
+    label,
 }
 
 ---Returns `true` if `str` matches any pattern in `patterns`.
@@ -51,7 +63,7 @@ end
 ---@return integer width the number of spaces worth of indent.
 function JBC_indent()
     local curr_line = vim.api.nvim_get_current_line()
-    if curr_line:match(label) then return 0 end
+    if matches_any(curr_line, no_indentation) then return 0 end
     if curr_line:match(line_comment) then return -1 end
     local lnum = vim.v.lnum
     if lnum == 1 then return -1 end
