@@ -21,6 +21,7 @@ local starts = {
 local ends = {
     "^%s*END%s*$",
     "^%s*REPEAT%s*$",
+    "^%s*END%s+ELSE%s*$",
     "^%s*WHILE%s+",
     "^%s*UNTIL%s+",
     "%s+DO%s*$",
