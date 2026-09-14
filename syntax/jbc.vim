@@ -76,7 +76,7 @@ syntax region jbcString start=/'/ end=/\v'|$/
 syntax region jbcString start=/"/ end=/\v"|$/
 syntax region jbcString start=/\\/ end=/\v\\|$/
 
-syntax match jbcComment /\v(^|;)\s*(!|REM|\*).*/
+syntax match jbcComment /\v(^|;)\s*(!|REM\s+|\*).*/
 
 highlight default link jbcKeyword Keyword
 highlight default link jbcInclude PreProc
