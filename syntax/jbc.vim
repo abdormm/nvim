@@ -70,7 +70,9 @@ syntax keyword jbcKeyword
 syntax match jbcInclude /\v\$(INSERT|USING|PACKAGE)/
 syntax match jbcLabel /\v^\s*(\w|_|\.)+:/
 syntax match jbcOperator /\v(:|\+|\*|\-)/ 
-syntax match jbcFunction /\v(CALL\s*)@<=\k+(\(.*\))@=/
+syntax match jbcFunction /\v\k+(\(.*\))@=/
+syntax match jbcSubroutine /\v(CALL\s*)@<=\k+(\(.*\))@=/
+syntax match jbcSubroutine /\v(SUBROUTINE\s*)@<=\k+/
 
 syntax region jbcString start=/'/ end=/\v'|$/
 syntax region jbcString start=/"/ end=/\v"|$/
@@ -83,5 +85,6 @@ highlight default link jbcInclude PreProc
 highlight default link jbcLabel Label
 highlight default link jbcOperator Operator
 highlight default link jbcFunction Function
+highlight default link jbcSubroutine Function
 highlight default link jbcComment Comment
 highlight default link jbcString String
