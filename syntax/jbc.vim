@@ -71,9 +71,9 @@ syntax keyword jbcKeyword
 syntax match jbcInclude /\v\$(INSERT|USING|PACKAGE)/
 syntax match jbcLabel /\v^\s*(\w|_|\.)+:/
 syntax match jbcOperator /\v(:|\+|\*|\-)/ 
-syntax match jbcFunction /\v\k+(\(.*\))@=/
-syntax match jbcSubroutine /\v(CALL\s*)@<=\k+(\(.*\))@=/
-syntax match jbcSubroutine /\v(SUBROUTINE\s*)@<=\k+/
+syntax match jbcFunction /\v(\w|\.)+(\(.*\))@=/
+syntax match jbcSubroutine /\v(CALL\s*)@<=(\w|\.)+(\(.*\))@=/
+syntax match jbcSubroutine /\v(SUBROUTINE\s*)@<=(\w|\.)+/
 
 syntax region jbcString start=/'/ end=/\v'|$/
 syntax region jbcString start=/"/ end=/\v"|$/
