@@ -41,3 +41,5 @@ vim.lsp.enable {
     "lemminx",
     "qmlls",
 }
+
+vim.treesitter.language.register("bash", "sh")

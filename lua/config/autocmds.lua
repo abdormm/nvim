@@ -52,6 +52,7 @@ autocmd("LspAttach", {
 
 local enable_treesitter = {
     bash = true,
+    sh = true,
     c = true,
     cpp = true,
     html = true,

@@ -2,7 +2,7 @@ require("config.settings")
 require("config.autocmds")
 require("config.keymaps")
 require("config.commands")
-require("config.lsp")
+require("config.tools")
 require("config.lazy")
 
 require("vim._core.ui2").enable { enable = false }
