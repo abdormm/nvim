@@ -94,8 +94,8 @@ function JBC_indent()
         return prev_width + vim.bo.shiftwidth
     end
 
-    --- will happen with all CASE statements except the one right before BEGIN
-    --- CASE
+    --- will happen with all CASE statements except the one right after
+    --- BEGIN CASE
     if curr_line:match(case) then
         if prev_line:match(case) then
             return prev_width
