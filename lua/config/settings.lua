@@ -38,6 +38,9 @@ o.showtabline = 0
 o.winbar = "%= %f%( %r%m%) "
 o.statusline = " %<%f %h%m%r %= %l,%c%V | %P | %n "
 
+o.list = true
+o.listchars = "trail:-,nbsp:+,tab:<->"
+
 -- env
 env.nvimdata = vim.fn.stdpath("data")
 env.nvimconfig = vim.fn.stdpath("config")
