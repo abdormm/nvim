@@ -49,8 +49,8 @@ return {
                     },
                     fzf = {
                         true,
-                        ["ctrl-u"] = "unix-line-discard",
                         ["ctrl-d"] = "",
+                        ["ctrl-q"] = "select-all+accept",
                     },
                 },
                 actions = {
