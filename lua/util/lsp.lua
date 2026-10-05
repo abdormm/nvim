@@ -92,7 +92,8 @@ M.reuse_client_enhanced = function(client, config)
         }
         client:notify("workspace/didChangeWorkspaceFolders", params)
         for _, folder in ipairs(added) do
-            client.workspace_folders[#client.workspace_folders+1] = folder
+            client.workspace_folders = client.workspace_folders or {}
+            client.workspace_folders[#client.workspace_folders + 1] = folder
         end
         return true
     end
