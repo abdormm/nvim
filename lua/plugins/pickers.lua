@@ -12,6 +12,15 @@ return {
         dependencies = { "nvim-tree/nvim-web-devicons" },
         lazy = true,
         cmd = "FzfLua",
+        init = function()
+            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.ui.select = function (...)
+                -- to load fzf-lua which will register its ui_select
+                require("fzf-lua")
+                -- call it again after fzf-lua has registered its function
+                vim.ui.select(...)
+            end
+        end,
         config = function()
 
             local function fzf_reveal(selected, opts)
@@ -28,10 +37,10 @@ return {
             end
 
             ---@type fzf-lua.Config|{}
-            ---@diagnostic disable: missing-fields
             local opts = {
                 fzf_colors = true,
                 winopts = {
+                    ---@diagnostic disable-next-line: missing-fields
                     preview = { winopts = { cursorline = false } },
                     backdrop = 100,
                     on_create = function()
@@ -72,8 +81,50 @@ return {
                 files = {
                     cwd_prompt = false,
                 },
+                ui_select = function(ui_opts, items)
+                    local is_codeaction = ui_opts.kind == "codeaction"
+                    local has_preview = ui_opts.preview_item ~= nil or is_codeaction
+                    local height_percent = is_codeaction and 0.8 or 0.4
+                    local get_height = function()
+                        local max_height = vim.o.lines - vim.o.cmdheight
+                        local paddings = 4 -- for the 3 borders and the prompt
+                        local compact_height = #items + paddings
+                        local full_height = math.floor(max_height * height_percent)
+                        local height = compact_height
+                        if compact_height > full_height then
+                            height = height_percent
+                        end
+                        return height
+                    end
+                    -- TODO: handle when VimResized
+                    local on_create = function()
+                        local fzfwin = FzfLua.win.__SELF()
+                        local old_fn = fzfwin.toggle_preview
+                        fzfwin.toggle_preview = function(self)
+                            if self.preview_hidden then
+                                self._o.winopts.height = height_percent
+                            else
+                                self._o.winopts.height = get_height()
+                            end
+                            old_fn(self)
+                        end
+                    end
+
+                    return {
+                        winopts = {
+                            row = 0.5,
+                            col = 0.5,
+                            width = 0.4,
+                            height = get_height(),
+                            preview = {
+                                hidden = true,
+                                title = false,
+                            },
+                            on_create = has_preview and on_create or nil,
+                        },
+                    }
+                end,
             }
-            ---@diagnostic enable: missing-fields
             require("fzf-lua").setup(opts)
         end,
     },
@@ -89,7 +140,6 @@ return {
         lazy = true,
         cmd = "Telescope",
         config = function()
-
             local function telescope_reveal(prompt_bufnr)
                 local actions = require("telescope.actions")
                 local action_state = require("telescope.actions.state")
@@ -100,7 +150,6 @@ return {
                     pcall(neotree_reveal, vim.fs.joinpath(entry.cwd, filename))
                 end
             end
-
             local function telescope_copy_highlight(prompt_bufnr)
                 local actions = require("telescope.actions")
                 local action_state = require("telescope.actions.state")
