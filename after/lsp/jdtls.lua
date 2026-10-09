@@ -4,23 +4,37 @@ if vim.fn.has("win32") == 1 then
     default_runtime = {}
 else
     default_runtime = {
-        name = "JavaSE-26",
-        path = "/usr/lib/jvm/default-runtime/",
+        name = "JavaSE-27",
+        path = "/usr/lib/jvm/default-runtime",
     }
 end
+
+local root_markers1 = {
+    "mvnw",
+    "gradlew",
+    "settings.gradle",
+    "settings.gradle.kts",
+    ".git",
+}
+local root_markers2 = {
+    "build.xml",
+    "pom.xml",
+    "build.gradle",
+    "build.gradle.kts",
+    "src/",
+}
 
 ---@type vim.lsp.Config
 return {
     cmd = { "jdtls" },
-    root_dir = require("util.lsp").cwd_root_dir,
-    init_options = {
-        -- bundles = vim.fn.glob("~/tools/java/sts4/extension/jars/*.jar", false, true),
-        -- bundles = {}
-    },
+    root_markers = { root_markers1, root_markers2 },
     ---@type lspconfig.settings.jdtls
     settings = {
         redhat = { telemetry = { enabled = false } },
         java = {
+            project = {
+                sourcePaths = { "src" },
+            },
             format = {
                 enabled = true,
                 comments = {
@@ -34,7 +48,7 @@ return {
                 runtimes = {
                     default_runtime,
                 },
-            }
-        }
+            },
+        },
     },
 }
