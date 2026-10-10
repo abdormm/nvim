@@ -105,4 +105,16 @@ M.reuse_client_enhanced = function(client, config)
     return not has_diff(config_folders, client.workspace_folders)
 end
 
+---@param rpc_client vim.lsp.rpc.PublicClient
+---@param intercept? fun(method: vim.lsp.protocol.Method.ClientToServer.Request, params: table?, callback: fun(err?: lsp.ResponseError, result: any, request_id: integer), notify_reply_callback?: fun(message_id: integer)): vim.lsp.protocol.Method.ClientToServer.Request, table?, fun(err?: lsp.ResponseError, result: any, request_id: integer), fun(message_id: integer)?
+---@return vim.lsp.rpc.PublicClient
+M.rpc_client_interceptor = function(rpc_client, intercept)
+    if not intercept then return rpc_client end
+    local old_request = rpc_client.request
+    rpc_client.request = function(method, params, callback, notify_reply_callback)
+        return old_request(intercept(method, params, callback, notify_reply_callback))
+    end
+    return rpc_client
+end
+
 return M
