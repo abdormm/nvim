@@ -14,6 +14,10 @@ return {
                     fileMatch = { "pyrightconfig.json" },
                     url = "https://raw.githubusercontent.com/DetachHead/basedpyright/refs/heads/main/packages/vscode-pyright/schemas/pyrightconfig.schema.json",
                 },
+                {
+                    fileMatch = { "package.json" },
+                    url = "https://www.schemastore.org/package.json",
+                },
             },
             validate = { enable = true },
             format = { enable = true },
