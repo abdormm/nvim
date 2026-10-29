@@ -13,8 +13,11 @@ return {
         lazy = true,
         cmd = "FzfLua",
         init = function()
+            local old_ui_select = vim.ui.select
             ---@diagnostic disable-next-line: duplicate-set-field
             vim.ui.select = function (...)
+                -- this is so that we are able to deregister fzf-lua ui_select
+                vim.ui.select = old_ui_select
                 -- to load fzf-lua which will register its ui_select
                 require("fzf-lua")
                 -- call it again after fzf-lua has registered its function
